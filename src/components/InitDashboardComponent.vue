@@ -6,7 +6,6 @@
         
         <button><router-link to="/events/create">Crear</router-link></button>
         <button><router-link to="/events">Ver todos</router-link></button>
-        <button>Consultar</button>
       </div>
       <button @click="mostrarBotones">Acceder</button>
     </div>

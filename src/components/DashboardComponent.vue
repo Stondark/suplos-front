@@ -2,6 +2,7 @@
     <div>
         <div class="col-lg-8 offset-lg-2">
             <button class="btn btn-success" @click="generateReport()">Excel</button>
+            <button class="btn btn-outline-info" @click="updateStatus()">Actualizar estados</button>
             <a v-if="urlReport" :href="urlReport" target="_blank" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Reporte generado</a>
         </div>
         <div class="col-lg-8 offset-lg-2">
@@ -96,9 +97,15 @@ export default {
             const dataTable = $('#table-event').DataTable();
             // Agrega un evento de clic a los botones generados en la tabla
             dataTable.on('click', 'button.btn-success', (e) => {
-            const button = $(e.currentTarget);
-            const id = button.data('id'); // Obtén el valor del atributo data-id
-            this.redirectToView(id);
+                const button = $(e.currentTarget);
+                const id = button.data('id'); // Obtén el valor del atributo data-id
+                this.redirectToView(id);
+            });
+
+            dataTable.on('click', 'button.btn-info', (e) => {
+                const button = $(e.currentTarget);
+                const id = button.data('id'); // Obtén el valor del atributo data-id
+                this.getDocuments(id);
             });
         },
         async getEvents() {
@@ -145,6 +152,67 @@ export default {
         },
         redirectToView(id){
             this.$router.push({ name: 'viewEvent', params: { id }});
+        },
+        async getDocuments(id) {
+            try {
+                const response = await fetch(`${BASE_URL}/client/events/${id}/documents`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': `Bearer ${token}`
+                    }});
+                
+                const dataResponse = await response.json();
+                if(dataResponse.success){
+                    dataResponse.data.forEach(element => {
+                        window.open(element);
+                    });
+                } else{
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: dataResponse.message,
+                    })
+                }
+            } catch (error) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+                })
+            }
+        },
+        async updateStatus(){
+            try {
+                const response = await fetch(`${BASE_URL}/client/events/status`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': `Bearer ${token}`
+                    }});
+                
+                const dataResponse = await response.json();
+                if(dataResponse.success){
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Actualizado correctamente'
+                    });
+                    this.$router.go();
+                } else {
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: dataResponse.message,
+                    })
+                }
+                
+            } catch (error) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+                })
+            }
         }
     }
 };
