@@ -1,24 +1,41 @@
-# suplos-front
 
-## Project setup
-```
-npm install
-```
+# Bienvenidos
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Los requisitos para correr este proyecto son:
+- npm 
+- node.js
 
-### Compiles and minifies for production
+
+## Usuario de pruebas
+
 ```
-npm run build
+username: admin
+password: admin
 ```
 
-### Lints and fixes files
-```
-npm run lint
+## Deployment
+
+
+- Clona el repositorio
+```bash
+  https://github.com/Stondark/suplos-front.git
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- Abre la terminal de tu sistema y accede a la ruta de donde guardaste el repositorio
+```bash
+  cd C:\Users\User\Documents\suplos-front
+```
+
+- Instala las librerías
+```bash
+    npm install
+```
+
+- Ejecuta el comando
+```bash
+    npm run serve
+```
+Ahora prueba el aplicativo desde:
+```bash
+    localhost:8080
+```
